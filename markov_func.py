@@ -1,6 +1,10 @@
+# File to define Markov Analysis functionsfor transition matrices and stationary distributions
+
+# Import packages
 import pandas as pd
 import numpy as np
 
+# 
 def MarkovTime(code, subcodes, timeframes, timeframe_names):
     
     # Create multi column dataframe to store multiple transition probability matrices
@@ -63,8 +67,9 @@ def MarkovTime(code, subcodes, timeframes, timeframe_names):
     return DF
   
 
-#%% 
-
+# Define function to extract stationary distribution
+# Takes interaction dataframe, behavioural group and subcodes of interest as inputs
+# Outputs stationary distribution and "flag" if eigenv
 def station(df, code, subcode):
     
     if len(code) != 0:
@@ -80,12 +85,7 @@ def station(df, code, subcode):
             
             # find eigenvectors that correspond to eigenvalue closest to 1
             evec = eigenvectors[:, np.abs(eigenvalues-1).argmin()]; #evec = evec[:,0]
-            
-            # test if eigenvalues are really really different from 1
-            evaldiff = np.abs(eigenvalues-1).min()
-            if evaldiff > 0.05:
-                print("Eigenvalue is {} different from 1".format(np.round(evaldiff, 3)))
-            
+
             stationary = evec / evec.sum()
             stationary = stationary.real    # take real part only, should sum to 1
             
