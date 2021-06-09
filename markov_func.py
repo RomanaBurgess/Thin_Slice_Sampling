@@ -65,8 +65,8 @@ def MarkovTime(code, subcodes, thin_slices, thin_slice_names):
 
     return DF
 
-# Define function to extract stationary distribution
-# Takes interaction dataframe, behavioural group and subcodes of interest as inputs
+# Define function to extract stationary distributions 
+# Takes transition matrix for a behavioural group, definition of behavioural group and subcodes as inputs
 # Outputs stationary distribution and "flag" if stationary distribution was unable to be calculated
 def station(df, code, subcode):
     
