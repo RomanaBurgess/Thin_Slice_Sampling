@@ -16,4 +16,5 @@ The files used in this analyses are described below.
 * dataframes.py
 * markov_func.py
 * extract_measures.py
-* statistical_analyses.py
+* transition_analyses.py
+* stationary_analyses.py
