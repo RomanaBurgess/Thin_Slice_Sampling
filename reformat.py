@@ -1,15 +1,17 @@
+# File used to reformat the .xlsx data to be more accessible
 
-# Imports
+# Import packages
 import datetime
 import numpy as np
 import pandas as pd
 
+# Define function to generally format the data
 def format_data(data):
     
-    data_copy = data.copy()
-    del(data)
+    # Create copy of the imported data to avoid errors
+    data_copy = data.copy(); del(data)
 
-    # Remove "State Stop" rows [don't need them]
+    # Remove "State Stop" rows (unnessary feature of Observer XT event log output)
     data_copy = data_copy[~(data_copy["Event_Type"] == "State stop")]
 
     # Extract microseconds from Time_Relative_sf
@@ -52,18 +54,22 @@ def format_data(data):
     
     return data_copy
 
-#%% Split overalapping minutes data
-
+# Define function to "split" data where time period of a behaviour overalaps with minute mark
+# This is important for extracting the transition data
 def split_data(data):
     
+    # Extract all behaviour start and end times
     starts = data.Time_Relative_hms.apply(lambda a: a.minute)
     ends   = data.Time_End.apply(lambda a: a.minute)
-        
+    
+    # Identify datapoints which overlap with 1.00, 2.00 etc.
+    # Label as "keep" or "split"
     d_split = data[ends > starts]
     d_keep  = data[ends == starts]
     
     df = pd.DataFrame(d_keep)
     
+    # Split data overlapping minute mark into 2 (or more) separate data entries
     for i in range(len(d_split)):
             
             start  = d_split.iloc[i, :].Time_Relative_hms
@@ -84,11 +90,13 @@ def split_data(data):
             A.loc[0, "Start"]      = start
             A.loc[len(A)-1, "End"] = end
             
+            # Store the split data by start and end time
             rows["Time_Relative_hms"] = A.loc[:, "Start"].values
             rows["Time_End"] = A.loc[:, "End"].values
-            
+             
             A = pd.DataFrame(index = range(len(rows)), columns = ["Duration", "Start"])
             
+            # Reformat new data entries
             # Add duration_sf and time_relative_sf in correct format
             for i in range(len(rows)):
                 
