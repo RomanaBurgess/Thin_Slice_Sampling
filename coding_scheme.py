@@ -1,12 +1,9 @@
-# Coding scheme
+##% Define MHINT Coding Scheme
 
+# Import packages
 import pandas as pd
-import os
-os.chdir("C:\\Users\\az19326\\OneDrive - University of Bristol\\Documents\\Second year\\October 2020\\Python")
 
-#%% Variable names
-
-# Mother and Infant
+# Define all variable names
 
 view = ["Full View", "Partial View", "No View"]
 
@@ -60,6 +57,7 @@ role_reversal = ["Yes, role reversal", "No role reversal", "Not possible to code
 
 eating = ["Yes, eating", "Not eating", "Not possible to code eating"]
 
+# Aggregate all codes into large dictionary
 all_codes = [view, audio, alertness_state, 
              caregiver_proximity, caregiver_body_orientation, 
              infant_body_orientation, head_orientation, 
@@ -72,6 +70,7 @@ all_codes = [view, audio, alertness_state,
              caregiver_unusual_behaviours, 
              infant_unusual_behaviours, role_reversal, eating]
 
+# Define names of all behavioural groups
 all_names = ["view", "audio", "alertness_state", 
              "caregiver_proximity", "caregiver_body_orientation", 
              "infant_body_orientation", "head_orientation", 
@@ -84,98 +83,17 @@ all_names = ["view", "audio", "alertness_state",
              "caregiver_unusual_behaviours", 
              "infant_unusual_behaviours", "role_reversal", "eating"]
 
-
-# %% Environment
-
-distractions = ["Yes, presence of distraction", "No, distractions absent", "Not possible to code distractions"]
-
-env_codes = [distractions, view, audio]
-
-env_names = ["distractions", "view", "audio"]
-
-#%% Vocalisations
-
-Modifier_2 = ["Positive", "Neutral", "Negative", "Ironic and sarcastic", "Not possible to code tone"]
-Modifier_3 = ["Infant register", "Adult register", "Not possible to code register"]
-Modifier_4 = ["Statement/Declarative", "Question/Interrogative", "Exclamation/Exlamatory", "Command/Imperative", "Other type of sentence", "Not possible to code type of sentence"]
-mod_names  = ["Modifier_2", "Modifier_3", "Modifier_4"]
-voc        = [Modifier_2, Modifier_3, Modifier_4]
-
-v_tup = []
-
-for i in range(len(mod_names)):     
-    mod = voc[i]
-    
-    for j in range(len(mod)):            
-        code = mod[j]           
-        v_tup.append(code)
-        
-Cooccur = pd.DataFrame(columns = v_tup, index = v_tup)
-Cooccur = Cooccur.fillna((0))
-
-#%%
+#%% Define Multi-index for use in creating dataframes 
+IDs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 var_tup = []
 
-for i in range(len(all_names)):
-    name  = all_names[i]
-    codes = all_codes[i]
-    for j in range(len(codes)):
-       var_tup.append((name, codes[j]))
+for n in range(len(IDS)):
+    c_dat = "dyad" + str(IDs[n])
+    
+    for i in range(len(all_names)):
+        name  = all_names[i]
+        codes = all_codes[i]
+        for j in range(len(codes)):
+           var_tup.append((c_dat, name, codes[j]))
 
 multi_ind = pd.MultiIndex.from_tuples(var_tup)
-
-#%% Cardiff 
-cardiff = [23, 21, 26, 29, 33, 87, 34, 63, 47, 48, 162, 185, 163, 190, 194, 195, 197, 199, 200, 204, 59, 74, 105, 106, 111, 121, 129, 141, 146, 154, 159]
-var_tup_cardiff = []
-
-for n in range(len(cardiff)):
-    c_dat = "Cardiff" + str(cardiff[n])
-    
-    for i in range(len(all_names)):
-        name  = all_names[i]
-        codes = all_codes[i]
-        for j in range(len(codes)):
-           var_tup_cardiff.append((c_dat, name, codes[j]))
-
-multi_ind_cardiff = pd.MultiIndex.from_tuples(var_tup_cardiff)
-
-#%% Bristol mum
-bristol_mum = ["278140497A_Feeding_AC", "278123519B_Stacking_IC", "278120336B_Stacking_IC",
-"278119436A_Feeding_AC", "278115240A_feeding_RP_IC", "278108945A_Stacking1_IC",
-"278107409A_feeding_EI_IC", "278107307A_feeding_RP_IC", "278105342B_Stacking_IC",
-"278105342B_Feeding_AC_IC", "278103911A_Feeding_AC_IC", "278102804A_Feeding_AC",
-"278102511A_Feeding_AC", "278101837A_Feeding_AC", "278100320A_Feeding_EI"]
-
-var_tup_brism = []
-
-for n in range(len(bristol_mum)):
-    c_dat = bristol_mum[n]
-    
-    for i in range(len(all_names)):
-        name  = all_names[i]
-        codes = all_codes[i]
-        for j in range(len(codes)):
-           var_tup_brism.append((c_dat, name, codes[j]))
-
-multi_ind_brism = pd.MultiIndex.from_tuples(var_tup_brism)
-
-#%% Bristol dads
-brisd = ["278100311C_feeding_MR", "278109414A_feeding_MR","278120342A_reading_MR",
-"278120342A_stacking_MR", "278127953A_feeding1_MR", "278127953A_feeding2_PC",
-"278127953A_feeding3_PC", "278127953A_stacking_MR", "278128402B_stacking_PC",
-"278128402B_stacking+feeding_MR", "278130718B_feeding_JS", "278147230A_bedtime_MR",
-"278147230A_feeding_JS", "278147248A_P_freeplay+book_LM", "278147397A_feeding_MR",
-"278147585A_feeding_MR", "2781472555A_feeding_LM"]
-
-var_tup_brisd = []
-
-for n in range(len(brisd)):
-    c_dat = brisd[n]
-    
-    for i in range(len(all_names)):
-        name  = all_names[i]
-        codes = all_codes[i]
-        for j in range(len(codes)):
-           var_tup_brisd.append((c_dat, name, codes[j]))
-
-multi_ind_brisd = pd.MultiIndex.from_tuples(var_tup_brisd)
