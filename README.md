@@ -8,3 +8,12 @@
 
 ## Code
 All code is written in Python 3.0 and modules used are pandas, NumPy and SciPy.
+
+The files used in this analyses are described below.
+
+* coding_scheme.py
+* reformat.py
+* dataframes.py
+* markov_func.py
+* extract_measures.py
+* statistical_analyses.py
