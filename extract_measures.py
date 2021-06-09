@@ -1,7 +1,8 @@
 #%% Thin slice sampling in parent-infant interactions.
 
-# This file takes datasets comprised of event logs (.xlsx) for parent and infant interactions, of 5 minute in length. Frequencies, transitions matrices
-# and associated stationary distributions are calculated for each dyad over 14 different timeframes. 
+# Input: This file takes datasets comprised of event logs (.xlsx) for parent and infant interactions, of 5 minute in length.
+# Outputs: Frequencies - including mean counts, standard deviations and Pearson correlations - transitions matrices and associated stationary 
+# distributions are calculated for each dyad, over the 15 distinct thin slices. These are saved as excel files.
 # Note: whilst these files for used for both mother and father data, variables for both parents have been generalised as "mum" for consistency.
 
 # Import packages
@@ -162,8 +163,23 @@ for i in range(len(cs.all_codes)):
     for n in list(dict):
       thin_slice = a[dict[n]].values
       df.loc[name,  n] = str(np.round(thin_slice.mean(), 2)) + " (" + str(np.round(np.std(thin_slice), 2)) + ")"
+                  
+    # Save mean frequency and standard deviation for each behaviour over each thin slice
+    # Save Pearson Correlations between each thin slice and full-session pairing              
+    for j in range(len(thin_slices)):
+        
+        thin_slice = a["Count " + timeframe_names[j]]
+        
+        df.loc[name, thin_slice_names[j] + " mean"] = thin_slice.mean()        # Save mean frequency for specified slice
+        df.loc[name, thin_slice_names[j] + " (SD)"] = np.std(thin_slice)       # Save standard deviation of frequencies for specified slice
+    
+        df.loc[name, thin_slice_names[j] + " r"] = np.round(pearsonr(thin_slice, All_Mean["Mean"])[0], 2)        # Save Pearson correlation for specified slice
+        df.loc[name, thin_slice_names[j] + " p val"] = np.round(pearsonr(thin_slice, All_Mean["Mean"])[1], 2)    # Save associated p-value for specified slice
+
+# Remove entries for behaviours that didn't occur 
+df = df.fillna((0)); df = df[df.sum(axis=1) != 0]
       
-# comment out to save 
+# Save frequency data and correlations
 df.to_excel('./MUM_FREQUENCIES.xlsx') 
 df.to_excel('./INF_FREQUENCIES.xlsx') 
             
