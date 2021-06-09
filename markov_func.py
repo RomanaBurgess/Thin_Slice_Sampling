@@ -1,11 +1,13 @@
-# File to define Markov Analysis functionsfor transition matrices and stationary distributions
+# File to define Markov Analysis functions for transition matrices and stationary distributions
 
 # Import packages
 import pandas as pd
 import numpy as np
 
-# 
-def MarkovTime(code, subcodes, timeframes, timeframe_names):
+# Define function to extract transition matrices
+# Takes dataframe of interaction data for specific behavioural group, relevant subcodes, thin slice definitions and names as inputs
+# Outputs transition matrices calulcated over each thin slice
+def MarkovTime(code, subcodes, thin_slices, thin_slice_names):
     
     # Create multi column dataframe to store multiple transition probability matrices
     var_tup = []
@@ -19,19 +21,19 @@ def MarkovTime(code, subcodes, timeframes, timeframe_names):
     DF = DF.reindex(columns=list(subcodes), fill_value=0)
     DF = DF.transpose()
 
-    # Loop over each segment (i.e. first minute, first two minutes etc)
-    # Calculate transition probability matrix and add to large DF
-    
+    # Loop over each thin slice 
+    # Calculate transition probability matrix and add to large dataframe   
     for n in range(len(timeframes)):
         
-        T = timeframes[n]
+        T = thin_slices[n]
         x_ini = T[0]; x_end = T[1]
         
-        codes = code[code.Time_Relative_sf < x_end]       # Subset relevant mum_code
-        codes = codes[codes.Time_Relative_sf >= x_ini]    # Subset relevant mum_code
-        df = pd.DataFrame(0, subcodes, subcodes)       # Create empty dataframe
-        unique = codes.Behavior.unique()               # Unique behaviours expressed within mum_code
+        codes = code[code.Time_Relative_sf < x_end]       # Subset relevant data
+        codes = codes[codes.Time_Relative_sf >= x_ini]    
+        df = pd.DataFrame(0, subcodes, subcodes)          # Create empty dataframe
+        unique = codes.Behavior.unique()                  # Array of unique behaviours expressed within the data
     
+        # Calculate transition frequencies row by row
         for j in range(x_ini, x_end):
             
             if j == x_ini:
@@ -45,31 +47,27 @@ def MarkovTime(code, subcodes, timeframes, timeframe_names):
                 
             else:
                 original = subsequent
-            # original = original.tail(1)
-            # original = original.Behavior
                 
             subsequent = codes[codes.Time_Relative_sf < j+1]
             subsequent = subsequent.sort_values(by="Time_Relative_sf").tail(1)
-            # check
-            
-            #subsequent = subsequent.tail(1)
             subsequent = subsequent.Behavior
              
             df.loc[original, subsequent] = df.loc[original, subsequent] + 1
                
+        # Convert transition frequencies to probabilities        
         for i in unique:
             df.loc[i,:] = df.loc[i,:]/sum(df.loc[i,:]) 
         
+        # Store individual transition matrix in large dataframe of matrices
         name = timeframe_names[n]
         DF.loc[subcodes, name] = df.values
         DF = DF.fillna(0); df = df.fillna(0)
 
     return DF
-  
 
 # Define function to extract stationary distribution
 # Takes interaction dataframe, behavioural group and subcodes of interest as inputs
-# Outputs stationary distribution and "flag" if eigenv
+# Outputs stationary distribution and "flag" if stationary distribution was unable to be calculated
 def station(df, code, subcode):
     
     if len(code) != 0:
@@ -95,13 +93,11 @@ def station(df, code, subcode):
             
         else:      
             
-            stationary_distribution = 0
-            
+            stationary_distribution = 0      
             flag = False
         
     else:       
         stationary_distribution = 0
-
         flag = False
         
     return stationary_distribution, flag
