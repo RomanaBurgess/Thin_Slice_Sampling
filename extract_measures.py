@@ -1,9 +1,9 @@
-#%% Thin slice sampling in parent-infant interactions.
+#%% Thin slice sampling in parent-infant interactions main processing file.
 
 # Input: This file takes datasets comprised of event logs (.xlsx) for parent and infant interactions, of 5 minute in length.
 # Outputs: Frequencies - including mean counts, standard deviations and Pearson correlations - transitions matrices and associated stationary 
 # distributions are calculated for each dyad, over the 15 distinct thin slices. These are saved as excel files.
-# Note: whilst these files for used for both mother and father data, variables for both parents have been generalised as "mum" for consistency.
+# Note: whilst these files for used for both mother and father data, variables for both parents have been generalised as "mum".
 
 # Import packages
 import os
