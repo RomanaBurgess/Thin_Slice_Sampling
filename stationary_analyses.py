@@ -1,6 +1,6 @@
 ##% This file is for processing the stationary distribution data. 
 # A box plot of absolute differences between all thin slice and full-session measures is generated, and 
-# chi square analyses are performed to evaluate statistical significance. 
+# chi square analyses are performed to evaluate statistical significance, outputted as a table "X2_stat".
 
 # Import packages and files 
 import pandas as pd
