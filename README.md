@@ -1,6 +1,11 @@
 # Thin_Slice_Sampling
 
 ## Overview
+Accompanying files for the quantitative analysis of thin slice sampling in parent-infant interactions. 
+
+This work used coded video data from the Avon Longitudinal Study of Parents and Children (ALSPAC) and Grown in Wales (GiW) cohort studies.
+
+The aim of this work was to improve understanding of whether behaviours coded over "thin slices" of a 5-minute interaction were representative of those same behaviours over the full-session. Many behaviours were included in these analyses, including (but not limited to) *Facial Expressions*, *Vocalisations*, *Visual Attention*, and *Body Orientation*.
 
 ## Prerequisites
 * Access mother-infant video data from ALSPAC and GiW. 
