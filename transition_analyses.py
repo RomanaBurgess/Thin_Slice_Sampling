@@ -6,6 +6,7 @@
 import pandas as pd
 import numpy as np
 import coding_scheme as cs
+import dataframes at datfr
 from scipy.stats.distributions import chi2
 
 # Define dyad ID numbers
@@ -33,10 +34,10 @@ for i in range(len(cs.all_codes)):
     true[true == 0] = np.nan
     
     # Loop over each slice
-    for j in range(len(cs.thin_slice_names)):
+    for j in range(len(datfr.thin_slice_names)):
     
         # Name of given slice
-        T = cs.thin_slice_names[j]
+        T = datfr.thin_slice_names[j]
         
         # Subset relevant transitions matrices from large dataframes
         mat = trans.loc[(slice(None), subcodes), (T, subcodes)]
@@ -56,15 +57,6 @@ Tr = tr.reindex(columns= ["One", "Two", "Three", "Four", "Five", "OneTwo", "TwoT
 
 # Set index names
 Tr.index.set_names(["Code", "Behaviour"], inplace = True)
-
-# Remove codes from analysis with not enough occurrences
-remove_codes = [cs.audio, cs.view, cs.alertness_state, cs.encouragement, cs.agitation_soothing, cs.role_reversal,
-               cs.physical_imitation, cs.acknowledgment, cs.eating, cs.rough_and_tumble, 
-               cs.caregiver_unusual_behaviours, cs.infant_unusual_behaviours]
-
-for i in range(len(remove_codes)):
-    codes = remove_codes[i]
-    Tr = Tr[~Tr.index.get_level_values("Behaviour").isin(codes)]
 
 # Plot absolute difference box plots
 Tr.plot(kind="box", vert = False, figsize = [8,8], xlim = [-0.02, 1.02], fontsize = 13, title = "Distribution of differences of transition matrices from true transition matrices")
