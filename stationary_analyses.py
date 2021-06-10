@@ -1,9 +1,14 @@
+##% This file is for processing the stationary distribution data. 
+# A box plot of absolute differences between all thin slice and full-session measures is generated, and 
+# chi square analyses are performed to evaluate statistical significance. 
+
 # Import packages and files 
 import pandas as pd
 import numpy as np
 import coding_scheme as cs
 import datetime
 import statistics as stats
+import dataframes as datfr
 import behaviour_measures as bm
 from scipy.stats.distributions import chi2
 
@@ -25,10 +30,10 @@ for i in range(len(cs.all_codes)):
     # Define subcodes for behavioural group
     subcodes = cs.all_codes[i]
     
-    for j in range(len(cs.thin_slice_names)):
+    for j in range(len(datfr.thin_slice_names)):
     
         # Define thin slice
-        T = cs.thin_slice_names[j]
+        T = datfr.thin_slice_names[j]
         
         true = stats.loc[(slice(None), subcodes), ("OneTwoThreeFourFive")]
 
