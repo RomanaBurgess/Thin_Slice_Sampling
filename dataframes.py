@@ -19,13 +19,13 @@ thin_slice_names = ["One", "OneTwo", "OneTwoThree", "OneTwoThreeFour", "OneTwoTh
 "Two", "TwoThree", "TwoThreeFour", "TwoThreeFourFive", "Three", "ThreeFour", "ThreeFourFive", "Four", "FourFive", "Five"]
   
 # Extract list of all individual codes
-df = pd.DataFrame(index=(cs.multi_ind_cardiff))
+df = pd.DataFrame(index=(cs.multi_ind))
 subcodes = df.loc["dyad1"].index.get_level_values("Behaviour")
 
 # Pre define dataframe indices
 var_tup = []; var_tup2 = []
 
-for i in range(len(tthin_slice_names)):
+for i in range(len(thin_slice_names)):
     time  = thin_slice_names[i]
     for j in range(len(subcodes)):
        var_tup.append((time, subcodes[j]))
@@ -35,26 +35,14 @@ for i in range(len(IDs)):
     for j in range(len(subcodes)):
        var_tup2.append((c_dat, subcodes[j]))
       
-# Create dataframe to store mum (parent) transition matrices    
-mum_all = pd.MultiIndex.from_tuples(var_tup); mum_all2 = pd.MultiIndex.from_tuples(var_tup2)
-mum_all = pd.Series(dtype = "float64", index = mum_all); mum_all = mum_all.to_frame()
-mum_all = mum_all.reindex(columns = mum_all2, fill_value=0)
-mum_all = mum_all.transpose()
+# Create dataframe to store all transition matrices    
+all_trans = pd.MultiIndex.from_tuples(var_tup); all_trans2 = pd.MultiIndex.from_tuples(var_tup2)
+all_trans = pd.Series(dtype = "float64", index = all_trans); all_trans = all_trans.to_frame()
+all_trans = all.reindex(columns = all_trans2, fill_value=0)
+all_trans = all.transpose()
 
-# Create dataframe to store infant transition matrices  
-inf_all = pd.MultiIndex.from_tuples(var_tup); inf_all2 = pd.MultiIndex.from_tuples(var_tup2)
-inf_all = pd.Series(dtype = "float64", index = inf_all); inf_all = inf_all.to_frame()
-inf_all = inf_all.reindex(columns = inf_all2, fill_value=0)
-inf_all = inf_all.transpose()
-
-# Create dataframe to store mum (parent) stationary distributions
-all_mum_stat = pd.MultiIndex.from_tuples(var_tup2)
-all_mum_stat = pd.Series(dtype = "float64", index = all_mum_stat)
-all_mum_stat = all_mum_stat.to_frame()
-all_mum_stat = all_mum_stat.reindex(columns = timeframe_names, fill_value=0)
-
-# Create dataframe to store infant stationary distributions  
-all_inf_stat = pd.MultiIndex.from_tuples(var_tup2)
-all_inf_stat = pd.Series(dtype = "float64", index = all_inf_stat)
-all_inf_stat = all_inf_stat.to_frame()
-all_inf_stat = all_inf_stat.reindex(columns = timeframe_names, fill_value=0)
+# Create dataframe to store all stationary distributions
+all_stat = pd.MultiIndex.from_tuples(var_tup2)
+all_stat = pd.Series(dtype = "float64", index = all_stat)
+all_stat = all_stat.to_frame()
+all_stat = all_stat.reindex(columns = thin_slice_names, fill_value=0)
