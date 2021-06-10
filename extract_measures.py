@@ -34,15 +34,15 @@ thin_slice_names = ["One", "OneTwo", "OneTwoThree", "OneTwoThreeFour", "OneTwoTh
 # Array of data ID numbers, used to access .xlsx files (for confidentiality these have been anonymised)
 IDs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-# Pre-define dataframes to store frequency/transition/stationary distribution data
+# Pre-define and import dataframes to store frequency/transition/stationary distribution data
 var = []
 for i in range(len(thin_sice_names)):
     time  = thin_slice_names[i]
     var.append((time + " Rate"))
          
 big_mum = pd.DataFrame(index = cs.multi_ind, columns = var); big_inf = pd.DataFrame(index = cs.multi_ind, columns = var)
-mum_all = datfr.mum_all; inf_all = datfr.inf_all
-all_mum_stat = datfr.all_mum_stat; all_inf_stat = datfr.all_inf_stat
+all_trans = datfr.all_trans; inf_all = datfr.all_trans
+all_mum_stat = datfr.all_stat; all_inf_stat = datfr.all_stat
 
 # Dataframe used to compound all interaction data
 all_dat = pd.DataFrame() 
