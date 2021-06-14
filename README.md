@@ -1,7 +1,7 @@
 # Thin_Slice_Sampling
 
 ## Overview
-Accompanying files for the quantitative analysis of thin slice sampling in parent-infant interactions. 
+Accompanying files for the quantitative analysis of thin slice sampling in micro-coded parent-infant interactions. 
 
 This work used coded video data from the Avon Longitudinal Study of Parents and Children (ALSPAC) and Grown in Wales (GiW) cohort studies.
 
